@@ -4,7 +4,7 @@ Kakoune on Busybox
 Environment
 -----------
 
-Cygwin packages: g++, make, patch, perl
+Cygwin packages: g++, git, make, patch, perl
 
 Building
 --------
