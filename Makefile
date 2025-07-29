@@ -12,6 +12,7 @@ $(archive_name).tar.gz: kak busybox
 	mv pkg/usr/bin/kak pkg/bin/kak.exe
 	cp -t pkg kak.bat LICENSE.txt
 	cp busybox/busybox pkg/bin/busybox.exe
+	sed -n '/^License/,$$p' README.txt >pkg/README.txt
 	pkg/bin/busybox --list | xargs -i ln -s busybox.exe 'pkg/bin/{}'
 	cygcheck pkg/bin/kak.exe pkg/bin/busybox.exe \
 		| awk '/\\bin\\cyg.*\.dll/ {dlls[$$1] = 1} END {for (dll in dlls) printf "%s\0", dll}' \
