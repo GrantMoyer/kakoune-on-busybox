@@ -10,7 +10,7 @@ $(archive_name).tar.gz: kak busybox
 	mkdir -p pkg/bin
 	$(MAKE) -C kakoune DESTDIR="$(PWD)/pkg" PREFIX="/usr" install
 	mv pkg/usr/bin/kak pkg/bin/kak.exe
-	cp -t pkg kak.bat
+	cp -t pkg kak.bat LICENSE.txt
 	cp busybox/busybox pkg/bin/busybox.exe
 	pkg/bin/busybox --list | xargs -i ln -s busybox.exe 'pkg/bin/{}'
 	cygcheck pkg/bin/kak.exe pkg/bin/busybox.exe \
