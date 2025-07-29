@@ -7,15 +7,16 @@ archive_name = kakoune-$(kakoune_version)-on-busybox-$(busybox_version)
 package: $(archive_name).tar.gz
 
 $(archive_name).tar.gz: kak busybox
-	$(MAKE) -C kakoune DESTDIR="$(PWD)/pkg" PREFIX="/" install
-	$(MAKE) -C busybox CONFIG_PREFIX="$(PWD)/pkg" install
-	cygcheck pkg/bin/kak pkg/bin/busybox \
+	mkdir -p pkg/bin
+	$(MAKE) -C kakoune DESTDIR="$(PWD)/pkg" PREFIX="/usr" install
+	mv pkg/usr/bin/kak pkg/bin/kak.exe
+	cp -t pkg kak.bat
+	cp busybox/busybox pkg/bin/busybox.exe
+	pkg/bin/busybox --list | xargs -i ln -s busybox.exe 'pkg/bin/{}'
+	cygcheck pkg/bin/kak.exe pkg/bin/busybox.exe \
 		| awk '/\\bin\\cyg.*\.dll/ {dlls[$$1] = 1} END {for (dll in dlls) printf "%s\0", dll}' \
 		| xargs -0 realpath --zero \
 		| xargs -0 cp -t pkg/bin
-	mv pkg/bin/kak pkg/bin/kak.exe
-	mv pkg/bin/busybox pkg/bin/busybox.exe
-	cp -t pkg kak.bat
 	tar czf $(archive_name).tar.gz -C pkg .
 
 kak:
